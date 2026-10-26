@@ -1,6 +1,6 @@
 ## Interface: 16001
 ## Title: Price Log
-## Notes: Logs prices from your own AH scans and searches; /pricelog export gives a CSV. UNTESTED IN-GAME (WoW: Forever not launched); API checked against Blizzard UI source only. Use at your own risk.
+## Notes: Logs prices from your own AH scans and searches; /pricelog export gives a CSV.
 ## Author: Kenny
 ## Version: 0.1.0
 ## SavedVariables: KennyPriceLogDB

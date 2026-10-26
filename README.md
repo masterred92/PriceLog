@@ -2,13 +2,6 @@
 
 # Price Log (WoW: Forever) v0.1.0
 
-> [!WARNING]
-> **Untested in-game. Use at your own risk.** WoW: Forever has not launched yet (Nov 4 2026), so none of this has run in the real client.
-> - API usage is verified against Blizzard's UI source only (Gethe/wow-ui-source `forever` branch, 1.60.1 build 70374), plus luacheck and mock-client tests.
-> - Item IDs were checked against auctionhouse.fyi's Forever item data (build 1.60.1.70009), not in-game.
-> - `## Interface: 16001` is unconfirmed (the UI source .toc files show `0`).
-> - Found a bug? Use the addon's `report` command and [open an issue](https://github.com/masterred92/PriceLog/issues).
-
 Records auction house prices **from your own scans and searches** into SavedVariables, kept separately for each realm and faction:
 - **Full scan:** `/pricelog scan` at an open AH. This is Blizzard's full-AH replicate, limited to about once per 15 minutes; the addon tells you how long is left. For every item it stores the lowest unit buyout, the median unit buyout and the total quantity.
 - **Your searches:** when you browse or search the AH yourself, the shown lowest price and quantity are recorded too, at most one point per item per minute.
