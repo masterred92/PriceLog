@@ -56,6 +56,14 @@ end
 local sources = Core.NewRegistry("source", SOURCE_FORMAT, { "getPrice" })
 function PL.RegisterSource(spec) return sources.Register(spec) end
 
+-- Summary for the LDB display: items logged, full scans, time of the last full scan (0 = never).
+function PL.Stats()
+  if not realm then return 0, 0, 0 end
+  local n = 0
+  for _ in pairs(realm.items) do n = n + 1 end
+  return n, realm.scans or 0, realm.lastScan or 0
+end
+
 -- Latest own-scan price, falling back to registered sources. Used by MatTooltip and GoldPerSpot.
 function PL.GetLatest(itemID)
   if not realm then return nil end

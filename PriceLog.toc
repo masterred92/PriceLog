@@ -2,8 +2,9 @@
 ## Title: Price Log
 ## Notes: Logs prices from your own AH scans and searches; /pricelog export gives a CSV.
 ## Author: Kenny
-## Version: 0.1.0
+## Version: 0.2.0
 ## SavedVariables: KennyPriceLogDB
+## OptionalDeps: LibDataBroker-1.1
 ## X-License: MIT
 ## IconTexture: Interface\AddOns\PriceLog\media\icon
 ## X-Curse-Project-ID: 1767890
@@ -12,3 +13,4 @@
 Compat.lua
 Core.lua
 PriceLog.lua
+Broker.lua
