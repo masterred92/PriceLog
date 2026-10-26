@@ -56,7 +56,7 @@ end
 local sources = Core.NewRegistry("source", SOURCE_FORMAT, { "getPrice" })
 function PL.RegisterSource(spec) return sources.Register(spec) end
 
--- Latest own-scan price, falling back to registered sources. Used by MatTooltip and FarmTracker.
+-- Latest own-scan price, falling back to registered sources. Used by MatTooltip and GoldPerSpot.
 function PL.GetLatest(itemID)
   if not realm then return nil end
   local l = realm.latest[itemID]

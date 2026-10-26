@@ -5,7 +5,7 @@
 > - API usage is verified against Blizzard's UI source only (Gethe/wow-ui-source `forever` branch, 1.60.1 build 70374), plus luacheck and mock-client tests.
 > - Item IDs were checked against auctionhouse.fyi's Forever item data (build 1.60.1.70009), not in-game.
 > - `## Interface: 16001` is unconfirmed (the UI source .toc files show `0`).
-> - Found a bug? Use the addon's `report` command and [open an issue](https://github.com/masterred92/wow-forever-addons/issues).
+> - Found a bug? Use the addon's `report` command and [open an issue](https://github.com/masterred92/PriceLog/issues).
 
 Records auction house prices **from your own scans and searches** into SavedVariables, kept separately for each realm and faction:
 - **Full scan:** `/pricelog scan` at an open AH. This is Blizzard's full-AH replicate, limited to about once per 15 minutes; the addon tells you how long is left. For every item it stores the lowest unit buyout, the median unit buyout and the total quantity.
@@ -20,12 +20,18 @@ WoW addons can't write files, so there are two ways to get the data out:
 1. `/pricelog export [days] [itemID or link]` opens a window with CSV text already selected: press Ctrl+C and paste into a spreadsheet. The columns are `itemID,name,date,min_buyout_copper,median_copper,quantity,source`, with UTC ISO dates. Large logs are capped at 20,000 rows, so narrow by days or item if it says "truncated".
 2. **Offline path:** after you log out or `/reload`, everything is in `World of Warcraft\_forever_\WTF\Account\<ACCOUNT>\SavedVariables\PriceLog.lua` (the `KennyPriceLogDB` table), which a Python script can read next to auctionhouse.fyi data.
 
+## Download
+- **CurseForge:** coming soon (TODO: project not created yet). Meanwhile see [MasterRed92 on CurseForge](https://www.curseforge.com/members/masterred92/projects).
+- **Wago Addons:** coming soon (TODO: project not created yet).
+- **GitHub:** [Releases](https://github.com/masterred92/PriceLog/releases) (coming with the first tagged release) · [Issues](https://github.com/masterred92/PriceLog/issues)
+- **Companion addons** (optional, they share AH scans): [NeutralFlip](https://github.com/masterred92/NeutralFlip) · [MatTooltip](https://github.com/masterred92/MatTooltip) · [GoldPerSpot](https://github.com/masterred92/GoldPerSpot)
+
 ## Commands
 `/pricelog scan` · `export [days] [item]` · `trend <item>` · `stats` · `plugins` · `report` · `wipe confirm` (this realm/faction only) · alias `/kpl`
 
 ## Install
-1. Download the addon zip from [Releases](https://github.com/masterred92/wow-forever-addons/releases) (or copy the folder from this repo).
-2. Put the addon folder (e.g. `FarmTracker`) in `World of Warcraft\_forever_\Interface\AddOns\`. That folder sits next to `_retail_`; the exact name may differ.
+1. Download the addon zip (see Download above) or clone this repo into a folder named `PriceLog`.
+2. Put the addon folder (`PriceLog`) in `World of Warcraft\_forever_\Interface\AddOns\`. That folder sits next to `_retail_`; the exact name may differ.
 3. Restart the game, or type `/reload`. Check it is ticked in the AddOns list on the character screen.
 
 ## In-game test checklist
@@ -37,3 +43,6 @@ WoW addons can't write files, so there are two ways to get the data out:
 6. Scan with MatTooltip's `/mattip scan` instead: PriceLog also logs it.
 7. No lag spike or "script ran too long" error during the scan, even on a full AH. If there is one, report it with `/pricelog report`.
 8. On a second character of the other faction, the data is kept separate.
+
+## Development
+`tests/run.sh [path-to-wow-ui-source-forever]` runs `luac -p`, luacheck, the mock-client tests and (with a path) the API check against Blizzard's UI source. GitHub Actions runs the same on every push. Releases are packaged by [BigWigsMods/packager](https://github.com/BigWigsMods/packager) only when a `v*` tag is pushed.

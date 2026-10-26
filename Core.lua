@@ -1,4 +1,4 @@
--- Core.lua (shared; canonical copy in shared/, synced into each addon by tools/sync_shared.sh)
+-- Core.lua (shared helper; same file in each Kenny addon repo, only ISSUES_URL differs)
 -- SavedVariables with defaults in code + schema migrations, a pcall error ring buffer,
 -- a copyable bug-report window, and plugin registration helpers. Written from scratch (MIT).
 local ADDON, ns = ...
@@ -8,7 +8,7 @@ local C = ns.Compat
 
 Core.MAX_ERRORS = 5
 Core.REPORT_LIMIT = 2000
-Core.ISSUES_URL = "https://github.com/masterred92/wow-forever-addons/issues"
+Core.ISSUES_URL = "https://github.com/masterred92/PriceLog/issues"
 
 function Core.Version()
   return C.AddOnMeta(ADDON, "Version") or "dev"

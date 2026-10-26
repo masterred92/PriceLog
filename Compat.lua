@@ -1,4 +1,4 @@
--- Compat.lua (shared; canonical copy in shared/, synced into each addon by tools/sync_shared.sh)
+-- Compat.lua (shared helper; identical in each Kenny addon repo)
 -- Every WoW client call goes through here. Each function is feature-tested before use, and any
 -- secret value (Midnight-API "secret values") is treated as unknown: we return nil instead of
 -- comparing, doing maths on, or formatting it. Written from scratch for this repo (MIT).
