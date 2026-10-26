@@ -5,6 +5,9 @@
 ## Version: 0.1.0
 ## SavedVariables: KennyPriceLogDB
 ## X-License: MIT
+## IconTexture: Interface\AddOns\PriceLog\media\icon
+## X-Curse-Project-ID: 1767890
+## X-Wago-ID: nKWwkYKE
 
 Compat.lua
 Core.lua
