@@ -1,6 +1,6 @@
 <p align="center"><img src="media/logo.png" alt="PriceLog logo" width="200"></p>
 
-# Price Log (WoW: Forever) v0.2.0
+# Price Log (WoW: Forever) v0.3.0
 
 [![Tests](https://github.com/masterred92/PriceLog/actions/workflows/tests.yml/badge.svg)](https://github.com/masterred92/PriceLog/actions/workflows/tests.yml) [![WoW: Forever](https://img.shields.io/badge/WoW%3A%20Forever-Interface%2016001-c8a165)](https://github.com/masterred92/PriceLog/blob/main/PriceLog.toc) [![Release](https://img.shields.io/github/v/release/masterred92/PriceLog?label=release)](https://github.com/masterred92/PriceLog/releases) [![License: MIT](https://img.shields.io/github/license/masterred92/PriceLog)](https://github.com/masterred92/PriceLog/blob/main/LICENSE) [![CurseForge](https://img.shields.io/badge/CurseForge-PriceLog-f16436)](https://www.curseforge.com/wow/addons/pricelog) [![Wago](https://img.shields.io/badge/Wago-PriceLog-c1272d)](https://addons.wago.io/addons/pricelog)
 
@@ -11,6 +11,8 @@ Records auction house prices **from your own scans and searches** into SavedVari
 - Up to 200 points per item, kept for 90 days.
 
 **Trend:** `/pricelog trend <item>` compares the latest price to the median of the previous 7 days. It shows **RISING** (more than 10% above), **FALLING** (more than 10% below) or **STABLE**, and NOT ENOUGH DATA with fewer than 3 points.
+
+**Works with:** NeutralFlip, MatTooltip and GoldPerSpot all read its prices, so you only scan once; MatTooltip shows its 7-day trend. Falls back to Auctionator's prices if you have Auctionator. Works fully on its own.
 
 ## Export
 WoW addons can't write files, so there are two ways to get the data out:

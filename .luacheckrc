@@ -1,10 +1,10 @@
 std = "lua51"
 max_line_length = false
-exclude_files = { "tests/**", "tools/**", ".release/**", ".lua/**", ".luarocks/**" }
+exclude_files = { "tests/**", "tools/**", ".release/**", ".lua/**", ".luarocks/**", "wow-ui/**", "index/**", "hosts/**" }
 -- Our own globals (all Kenny-prefixed).
 globals = { "KennyPriceLog", "KennyPriceLogDB", "SLASH_KENNYPRICELOG1", "SLASH_KENNYPRICELOG2", "SlashCmdList" }
 -- WoW API (checked against Blizzard's UI source by tools/verify_api.py) and our other addons' optional globals.
-read_globals = { "C_Item", "C_AuctionHouse", "C_Timer", "C_Container", "C_AddOns", "C_RestrictedActions", "C_Map",
+read_globals = { "Auctionator", "C_Item", "C_AuctionHouse", "C_Timer", "C_Container", "C_AddOns", "C_RestrictedActions", "C_Map",
   "CreateFrame", "UIParent", "GameTooltip", "ItemRefTooltip", "TooltipDataProcessor", "Enum",
   "GetMoneyString", "GetMoney", "GetTime", "GetRealZoneText", "GetSubZoneText", "GetBuildInfo", "GetLocale",
   "GetRealmName", "UnitFactionGroup", "UnitAffectingCombat", "issecretvalue", "NUM_BAG_SLOTS",

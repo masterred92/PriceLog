@@ -20,9 +20,9 @@ end
 
 function PL.InstallBroker()
   if obj then return obj end
-  local ldb = type(LibStub) == "table" and LibStub("LibDataBroker-1.1", true)
-  if not ldb then return nil end
-  obj = ldb:NewDataObject("PriceLog", {
+  -- One shared "Kenny's addons" entry with a menu when several of our addons are installed; our own entry when alone.
+  obj = ns.Hub.Launcher("PriceLog", {
+    leftHint = "Open",
     type = "data source", text = "Price Log", label = "Price Log",
     icon = "Interface\\AddOns\\PriceLog\\media\\icon",
     OnClick = function(_, button)

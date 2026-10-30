@@ -2,7 +2,7 @@ package.path = "tests/?.lua;" .. package.path
 local W = require("mock_wow"); W.install()
 local check = W.check
 local ns = W.loadAddon(".", "PriceLog")
-W.fire("PLAYER_LOGIN")
+W.fire("PLAYER_LOGIN"); W.runTimers()
 local PL, db = KennyPriceLog, KennyPriceLogDB
 check(db.schema == 1 and db.realms["TestRealm-Alliance"], "schema 1, realm-faction key")
 local realm = db.realms["TestRealm-Alliance"]
@@ -85,4 +85,13 @@ s.a = 2; check(store.a == 2, "non-default stored"); s.a = 1; check(store.a == ni
 -- schema newer than supported is left alone and reported
 local _, ok = ns.Core.Migrate({ schema = 9 }, {}, 1)
 check(ok == false, "future schema not migrated")
+-- 0.3.0: Auctionator fallback, size readout, shared price service
+Auctionator = { API = { v1 = { GetAuctionPriceByItemID = function(caller, id) if caller == "PriceLog" and id == 424242 then return 777 end end } } }
+local rec = KennyPriceLog.GetLatest(424242)
+check(rec and rec.p == 777 and rec.source == "Auctionator", "Auctionator used as a fallback")
+Auctionator = nil
+check(KennyPriceLog.GetLatest(424242) == nil, "no Auctionator: no price, no error")
+local items, points, kb = KennyPriceLog.Size()
+check(items > 0 and points >= items and kb >= 0, "size readout")
+check(KennyAddonsHub.prices.PriceLog ~= nil, "registered as the shared price store")
 W.done("PriceLog")

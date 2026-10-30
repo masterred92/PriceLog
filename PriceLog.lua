@@ -3,6 +3,7 @@
 -- recorded passively when you search the AH yourself. No network access, no file writing.
 local ADDON, ns = ...
 local C, Core = ns.Compat, ns.Core
+local L = Core.L
 
 local SCHEMA = 1
 local SOURCE_FORMAT = 1
@@ -73,7 +74,23 @@ function PL.GetLatest(itemID)
     local price = C.SafeNumber(sources.Call(p, "getPrice", itemID))
     if price and price > 0 then return { p = price, t = 0, n = 0, source = p.spec.id } end
   end
+  -- Auctionator's own scan data, if installed (read-only public API): one more fallback, never a second scan.
+  local api = type(Auctionator) == "table" and Auctionator.API and Auctionator.API.v1
+  if api and api.GetAuctionPriceByItemID then
+    local ok, price = pcall(api.GetAuctionPriceByItemID, "PriceLog", itemID)
+    price = ok and C.SafeNumber(price)
+    if price and price > 0 then return { p = price, t = 0, n = 0, source = "Auctionator" } end
+  end
   return nil
+end
+
+-- How big the log is: items, points and a rough SavedVariables size (about 40 bytes per point).
+function PL.Size()
+  local items, points = 0, 0
+  for _, r in pairs(db and db.realms or {}) do
+    for _, it in pairs(r.items) do items = items + 1; points = points + #it.pts end
+  end
+  return items, points, math.floor(points * 40 / 1024)
 end
 
 -- Latest price vs the median of the previous 7 days of points.
@@ -220,6 +237,33 @@ f:SetScript("OnEvent", function(_, event, arg1)
   end
 end)
 
+-- PriceLog is the shared price store for our other addons (NeutralFlip, MatTooltip, GoldPerSpot, DEB later).
+ns.Hub.RegisterPrices(ADDON, function(itemID) return PL.GetLatest(itemID) end)
+ns.Hub.Provide("trend", ADDON, function(itemID)
+  local label, med, change = PL.Trend(itemID)
+  if med then return { label = label, median = med, change = change } end
+end)
+Core.RegisterTextPanel("Prices", function()
+  local n, scans, last = PL.Stats()
+  local items, points, kb = PL.Size()
+  return ("%s\n%d %s, %d %s, %s %s\n%s: %d %s, %d %s, ~%d KB"):format(C.RealmFaction(), n, L["items"], scans, L["full scans"],
+    L["last"], last > 0 and date("%Y-%m-%d %H:%M", last) or L["never"], L["All realms"], items, L["items"], points, L["points"], kb)
+end)
+Core.Setup({ cmd = "/pricelog",
+  required = { "C_AuctionHouse.ReplicateItems", "C_AuctionHouse.GetNumReplicateItems", "C_AuctionHouse.GetReplicateItemInfo",
+    "C_AuctionHouse.GetBrowseResults", "C_AuctionHouse.GetNumCommoditySearchResults", "C_AuctionHouse.GetCommoditySearchResultInfo",
+    "C_AuctionHouse.IsThrottledMessageSystemReady" },
+  optional = { "LibStub", "Auctionator.API.v1.GetAuctionPriceByItemID" },
+  db = function() return db end,
+  firstRun = { L["Welcome! PriceLog keeps the prices you see at the auction house, for you and our other addons."],
+    L["Search the AH as usual (logged automatically), or /pricelog scan for a full scan (once per 15 min)."],
+    L["/pricelog export gives a CSV; /pricelog debug checks your setup."] },
+  debugLines = function()
+    local items, points, kb = PL.Size()
+    return { ("%s: %d %s, %d %s, ~%d KB (%s %d, %s %d %s)"):format(L["log size"], items, L["items"], points, L["points"], kb,
+      L["cap per item"], settings and settings.maxPoints or 0, L["kept"], settings and settings.keepDays or 0, L["days"]) }
+  end })
+
 local function parseArgs(rest)
   local days, item
   for tok in (rest or ""):gmatch("%S+") do
@@ -243,6 +287,8 @@ SlashCmdList.KENNYPRICELOG = function(msg)
     local wait = SCAN_COOLDOWN - (C.Now() - realm.lastScan)
     if wait > 0 then Core.Print(("full scan available in %d min. Your item searches are still logged."):format(math.ceil(wait / 60))) return end
     if not C.AHReady() then Core.Print("AH busy, try again shortly.") return end
+    local mine, by, left = ns.Hub.ClaimScan(ADDON)
+    if not mine then Core.Print(("%s %s; %s %d min. %s"):format(L["a full scan was already started by"], by or "?", L["next one in"], math.ceil(left / 60), L["Its results are recorded here too."])) return end
     C.AHReplicate()
     Core.Print("full scan requested. Stay at the AH until it reports.")
   elseif cmd == "export" then
@@ -260,8 +306,10 @@ SlashCmdList.KENNYPRICELOG = function(msg)
   elseif cmd == "stats" then
     local n, o = 0, 0
     for _, it in pairs(realm.items) do n = n + 1; o = o + #it.pts end
-    Core.Print(("%s: %d items, %d points, %d full scans, last %s."):format(C.RealmFaction(), n, o, realm.scans or 0,
-      realm.lastScan > 0 and date("%Y-%m-%d %H:%M", realm.lastScan) or "never"))
+    local _, _, kb = PL.Size()
+    Core.Print(("%s: %d items, %d points, %d full scans, last %s. Saved data, all realms: ~%d KB."):format(C.RealmFaction(), n, o, realm.scans or 0,
+      realm.lastScan > 0 and date("%Y-%m-%d %H:%M", realm.lastScan) or "never", kb))
+  elseif cmd == "debug" then Core.PrintDebug()
   elseif cmd == "plugins" then for _, l in ipairs(sources.Describe()) do Core.Print(l) end
   elseif cmd == "report" then
     local n = 0
@@ -272,6 +320,6 @@ SlashCmdList.KENNYPRICELOG = function(msg)
   elseif cmd == "wipe" and rest == "confirm" then
     db.realms[C.RealmFaction()] = nil; realm = realmData(); Core.Print("log wiped for " .. C.RealmFaction() .. ".")
   else
-    Core.Print("/pricelog scan | export [days] [itemID] | trend <itemID> | stats | plugins | report | wipe confirm")
+    Core.Print("/pricelog scan | export [days] [itemID] | trend <itemID> | stats | plugins | debug | report | wipe confirm")
   end
 end
