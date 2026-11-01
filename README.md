@@ -36,7 +36,7 @@ WoW addons can't write files, so there are two ways to get the data out:
 2. Put the addon folder (`PriceLog`) in `World of Warcraft\_forever_\Interface\AddOns\`. That folder sits next to `_retail_`; the exact name may differ.
 3. Restart the game, or type `/reload`. Check it is ticked in the AddOns list on the character screen.
 
-## In-game test checklist
+## In-game test checklist (launch day)
 1. PriceLog loads; `/pricelog stats` shows your realm-faction and "never".
 2. At a faction AH, `/pricelog scan`: within a minute or two, "logged N items". A second `scan` right away says how many minutes until the next one.
 3. Search Light Leather in the AH yourself, then run `/pricelog trend Light Leather` (shift-click the link): it reports a point count or trend, with no errors.
@@ -47,6 +47,9 @@ WoW addons can't write files, so there are two ways to get the data out:
 8. On a second character of the other faction, the data is kept separate.
 9. In the AddOns list (character select or Esc > AddOns), PriceLog shows its icon. If it shows a blank or green square, report it; the addon still works.
 10. With Titan Panel or ChocolateBar: the Price Log display shows '<n> prices, scan <time>'; left-click prints stats, right-click opens the export.
+
+## Licence
+MIT. Written from scratch; no code copied from other addons.
 
 ## Development
 `tests/run.sh [path-to-wow-ui-source-forever]` runs `luac -p`, luacheck, the mock-client tests and (with a path) the API check against Blizzard's UI source. GitHub Actions runs the same on every push. Releases are packaged by [BigWigsMods/packager](https://github.com/BigWigsMods/packager) only when a `v*` tag is pushed.
