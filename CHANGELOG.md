@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1
+- A full scan that hits an error no longer blocks every later scan until /reload.
+- An empty scan result (e.g. the AH closed) no longer counts as a full scan.
+- Slash commands typed before the addon finished loading are ignored instead of erroring.
+
 ## 0.3.0
 - Now the price source for NeutralFlip, MatTooltip and GoldPerSpot: one scan, one price store.
 - Uses Auctionator's prices when it has none of its own.

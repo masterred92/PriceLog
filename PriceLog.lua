@@ -140,8 +140,9 @@ end
 local processing = false
 function PL.ProcessReplicate()
   if processing then return end
-  processing = true
   local n = C.AHNumReplicate()
+  if n == 0 then return end -- nothing streamed in (e.g. the AH closed): don't count an empty scan
+  processing = true
   local acc, i, now = {}, 0, C.Now()
   local function finish()
     local k, summary = 0, {}
@@ -158,7 +159,7 @@ function PL.ProcessReplicate()
     Core.Print("logged " .. k .. " items from the full scan.")
   end
   local function step()
-    if C.InCombat() then C_Timer.After(1, step) return end
+    if C.InCombat() then C_Timer.After(1, function() if not Core.SafeCall("scan", step) then processing = false end end) return end
     local stop = math.min(i + 500, n)
     while i < stop do
       local itemID, name, count, buyout = C.AHReplicateRow(i)
@@ -172,7 +173,7 @@ function PL.ProcessReplicate()
       end
       i = i + 1
     end
-    if i < n then C_Timer.After(0, function() Core.SafeCall("scan", step) end) else finish() end
+    if i < n then C_Timer.After(0, function() if not Core.SafeCall("scan", step) then processing = false end end) else finish() end
   end
   local ok = Core.SafeCall("scan", step)
   if not ok then processing = false end
@@ -279,6 +280,7 @@ PL.ParseExportArgs = parseArgs
 SLASH_KENNYPRICELOG1 = "/pricelog"
 SLASH_KENNYPRICELOG2 = "/kpl"
 SlashCmdList.KENNYPRICELOG = function(msg)
+  if not (db and realm) then return end
   local cmd, rest = (msg or ""):match("^(%S*)%s*(.-)$")
   cmd = cmd:lower()
   if cmd == "scan" then
