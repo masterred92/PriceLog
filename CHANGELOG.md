@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.2
+- Quieter: the first-login welcome is one line instead of three.
+
 ## 0.3.1
 - A full scan that hits an error no longer blocks every later scan until /reload.
 - An empty scan result (e.g. the AH closed) no longer counts as a full scan.

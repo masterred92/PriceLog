@@ -256,9 +256,7 @@ Core.Setup({ cmd = "/pricelog",
     "C_AuctionHouse.IsThrottledMessageSystemReady" },
   optional = { "LibStub", "Auctionator.API.v1.GetAuctionPriceByItemID" },
   db = function() return db end,
-  firstRun = { L["Welcome! PriceLog keeps the prices you see at the auction house, for you and our other addons."],
-    L["Search the AH as usual (logged automatically), or /pricelog scan for a full scan (once per 15 min)."],
-    L["/pricelog export gives a CSV; /pricelog debug checks your setup."] },
+  firstRun = { L["Welcome! Prices you see at the AH are logged automatically. /pricelog for commands."] }, -- one line on first install only
   debugLines = function()
     local items, points, kb = PL.Size()
     return { ("%s: %d %s, %d %s, ~%d KB (%s %d, %s %d %s)"):format(L["log size"], items, L["items"], points, L["points"], kb,

@@ -1,6 +1,6 @@
 <p align="center"><img src="media/logo.png" alt="PriceLog logo" width="200"></p>
 
-# Price Log (WoW: Forever) v0.3.1
+# Price Log (WoW: Forever) v0.3.2
 
 [![Tests](https://github.com/masterred92/PriceLog/actions/workflows/tests.yml/badge.svg)](https://github.com/masterred92/PriceLog/actions/workflows/tests.yml) [![WoW: Forever](https://img.shields.io/badge/WoW%3A%20Forever-Interface%2016001-c8a165)](https://github.com/masterred92/PriceLog/blob/main/PriceLog.toc) [![Release](https://img.shields.io/github/v/release/masterred92/PriceLog?label=release)](https://github.com/masterred92/PriceLog/releases) [![License: MIT](https://img.shields.io/github/license/masterred92/PriceLog)](https://github.com/masterred92/PriceLog/blob/main/LICENSE) [![CurseForge](https://img.shields.io/badge/CurseForge-PriceLog-f16436)](https://www.curseforge.com/wow/addons/pricelog) [![Wago](https://img.shields.io/badge/Wago-PriceLog-c1272d)](https://addons.wago.io/addons/pricelog)
 

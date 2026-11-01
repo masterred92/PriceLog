@@ -3,13 +3,11 @@
 -- the file to the TOC. Any string without a translation falls back to the English text.
 local _, ns = ...
 ns.Core.AddLocale("enUS", {
-  ["/pricelog export gives a CSV; /pricelog debug checks your setup."] = true,
   ["All realms"] = true,
   ["Its results are recorded here too."] = true,
-  ["Search the AH as usual (logged automatically), or /pricelog scan for a full scan (once per 15 min)."] = true,
   ["Some features are switched off. Type"] = true,
   ["WARNING: this client is missing APIs this addon needs:"] = true,
-  ["Welcome! PriceLog keeps the prices you see at the auction house, for you and our other addons."] = true,
+  ["Welcome! Prices you see at the AH are logged automatically. /pricelog for commands."] = true,
   ["a full scan was already started by"] = true,
   ["cap per item"] = true,
   ["client"] = true,
