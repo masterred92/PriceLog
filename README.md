@@ -19,14 +19,14 @@ WoW addons can't write files, so there are two ways to get the data out:
 1. `/pricelog export [days] [itemID or link]` opens a window with CSV text already selected: press Ctrl+C and paste into a spreadsheet. The columns are `itemID,name,date,min_buyout_copper,median_copper,quantity,source`, with UTC ISO dates. Large logs are capped at 20,000 rows, so narrow by days or item if it says "truncated".
 2. **Offline path:** after you log out or `/reload`, everything is in `World of Warcraft\_forever_\WTF\Account\<ACCOUNT>\SavedVariables\PriceLog.lua` (the `KennyPriceLogDB` table), which a Python script can read next to auctionhouse.fyi data.
 
-**New in 0.2.0**
+**Extras**
 - **LDB display:** with Titan Panel, ChocolateBar, Bazooka or another LibDataBroker display, Price Log shows how many prices are logged and when your last full scan was. Left-click prints stats, right-click opens the CSV export.
 
 ## Download
-- **CurseForge:** https://www.curseforge.com/wow/addons/pricelog (first release coming at launch, Nov 4). Author: [MasterRed92](https://www.curseforge.com/members/masterred92/projects).
-- **Wago Addons:** https://addons.wago.io/addons/pricelog (first release coming at launch, Nov 4).
-- **GitHub:** [Releases](https://github.com/masterred92/PriceLog/releases) (coming with the first tagged release) · [Issues](https://github.com/masterred92/PriceLog/issues)
-- **Companion addons** (optional, they share AH scans): [NeutralFlip](https://github.com/masterred92/NeutralFlip) · [MatTooltip](https://github.com/masterred92/MatTooltip) · [GoldPerSpot](https://github.com/masterred92/GoldPerSpot)
+- **CurseForge:** https://www.curseforge.com/wow/addons/pricelog. Author: [MasterRed92](https://www.curseforge.com/members/masterred92/projects).
+- **Wago Addons:** https://addons.wago.io/addons/pricelog.
+- **GitHub:** [Releases](https://github.com/masterred92/PriceLog/releases) · [Issues](https://github.com/masterred92/PriceLog/issues)
+- **Companion addons** (optional, they share AH scans): [NeutralFlip](https://github.com/masterred92/NeutralFlip) · [MatTooltip](https://github.com/masterred92/MatTooltip) · [GoldPerSpot](https://github.com/masterred92/GoldPerSpot) · [Dwarf Explorer's Bible](https://www.curseforge.com/wow/addons/dwarf-explorers-bible)
 
 ## Commands
 `/pricelog scan` · `export [days] [item]` · `trend <item>` · `stats` · `plugins` · `report` · `wipe confirm` (this realm/faction only) · alias `/kpl`
